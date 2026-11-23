@@ -1,25 +1,16 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#101827"><title>SIMBOT V2</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<header><div class="brand">SIM<span>BOT</span></div><small>Technical analysis workspace</small></header>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827"><title>SIMBOT V2</title><link rel="stylesheet" href="styles.css"></head>
+<body><header><div class="brand">SIM<span>BOT</span></div><small>EUR/USD analysis workspace</small></header>
 <main>
-  <section class="hero"><div><p class="eyebrow">FOCUSED PAIR ANALYSIS</p><h1>EUR/USD</h1><p>EMA 9 / EMA 21 · Structure · Rejection</p></div><div id="connection" class="pill">Checking data…</div></section>
-  <section class="panel controls">
-    <label>Market interval<select id="interval"><option value="1min">1 minute</option><option value="5min">5 minutes</option><option value="15min">15 minutes</option></select></label>
-    <label>Expiry<select id="expiry"><option value="1">1 minute</option><option value="3">3 minutes</option></select></label>
-    <button id="refresh">Refresh analysis</button>
-  </section>
-  <section class="panel signal"><p class="eyebrow">CURRENT SETUP</p><h2 id="signal">WAITING FOR DATA</h2><p id="reason">Load candles to calculate the indicators.</p><div class="metrics"><div><small>EMA 9</small><b id="ema9">—</b></div><div><small>EMA 21</small><b id="ema21">—</b></div><div><small>Trend</small><b id="trend">—</b></div></div></section>
-  <section class="grid">
-    <article class="panel"><h3>Pattern checks</h3><p>Double top: <b id="doubleTop">Not checked</b></p><p>Double bottom: <b id="doubleBottom">Not checked</b></p><p>Wick rejection: <b id="rejection">Not checked</b></p><p>Structure shift proxy: <b id="choch">Not checked</b></p></article>
-    <article class="panel"><h3>Paper-trade journal</h3><p>Recorded trades: <b id="count">0</b></p><p>Paper win rate: <b id="winrate">—</b></p><div class="journal"><button data-result="win">Record win</button><button data-result="loss" class="secondary">Record loss</button><button id="clear" class="secondary">Clear</button></div></article>
-  </section>
-  <p class="notice">SIMBOT provides technical-analysis signals for learning and paper testing only. It does not place trades or guarantee outcomes. Binary options are high risk. Third-party candles may differ from Pocket Option's displayed feed and timing.</p>
-</main>
-<script src="app.js"></script>
-</body></html>
+<section class="hero"><div><p class="eyebrow">FOCUSED PAIR ANALYSIS</p><h1>EUR/USD</h1><p>EMA 9 / EMA 21 · Double patterns · Rejection</p></div><div id="connection" class="pill">Checking data…</div></section>
+<section class="panel controls">
+<label>Market interval<select id="interval"><option value="1min">1 minute</option><option value="5min">5 minutes</option><option value="15min">15 minutes</option></select></label>
+<label>Expiry<select id="expiry"><option value="1">1 minute</option><option value="3">3 minutes</option></select></label><button id="refresh">Refresh analysis</button></section>
+<section class="panel chart-panel"><div class="chart-head"><div><p class="eyebrow">PRICE ACTION</p><h2>Candlestick chart</h2></div><span class="legend"><i class="bull"></i> Bullish <i class="bear"></i> Bearish <i class="ema9"></i> EMA 9 <i class="ema21"></i> EMA 21</span></div>
+<div class="chart-wrap"><canvas id="priceChart" aria-label="EUR/USD candlestick chart"></canvas><div id="chartTip">Move over chart to inspect candle</div></div><p class="hint">Chart uses Twelve Data candles. The newest candle may still be forming.</p></section>
+<section class="panel signal"><p class="eyebrow">CURRENT SETUP</p><h2 id="signal">WAITING FOR DATA</h2><p id="reason">Load candles to calculate the indicators.</p><div class="metrics"><div><small>EMA 9</small><b id="ema9">—</b></div><div><small>EMA 21</small><b id="ema21">—</b></div><div><small>Trend</small><b id="trend">—</b></div></div></section>
+<section class="panel"><h3>Required confirmations — all 3 must pass</h3><div class="checks"><p>1. EMA 9/21 crossover: <b id="crossCheck">Waiting</b></p><p>2. Confirmed double top/bottom: <b id="patternCheck">Waiting</b></p><p>3. Directional candle rejection: <b id="rejectCheck">Waiting</b></p></div><p class="hint" id="patternDetail">Pattern details will appear here.</p><div class="grid pattern-grid"><article><p>Double top</p><b id="doubleTop">Not checked</b></article><article><p>Double bottom</p><b id="doubleBottom">Not checked</b></article><article><p>Wick rejection</p><b id="rejection">Not checked</b></article><article><p>Structure break (CHoCH proxy)</p><b id="choch">Not checked</b></article></div></section>
+<section class="panel"><h3>Paper-trade journal</h3><p>Recorded trades: <b id="count">0</b> · Paper win rate: <b id="winrate">—</b></p><div class="journal"><button data-result="win">Record win</button><button data-result="loss" class="secondary">Record loss</button><button id="clear" class="secondary">Clear</button></div></section>
+<p class="notice">SIMBOT is an experimental technical-analysis and paper-testing tool. It does not place trades or guarantee outcomes. Binary options are high risk. Third-party candles can differ from Pocket Option's feed, prices and timing. Signals require independent confirmation and are not financial advice.</p>
+</main><script src="app.js"></script></body></html>
