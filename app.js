@@ -331,3 +331,35 @@ fetch("/api/status").then(r => r.json()).then(d => {
 journal();
 renderScanner();
 scanAll();
+// SIMBOT automatic scan upgrade: every 1 minute while this page is open.
+// Add this block at the VERY END of app.js, after the existing scanAll(); line.
+
+const autoScanStatus = document.createElement("div");
+autoScanStatus.id = "autoScanStatus";
+autoScanStatus.textContent = "Auto scan: ON · every 1 minute";
+autoScanStatus.style.cssText = "margin:10px 0;padding:10px 12px;border:1px solid #26364d;border-radius:10px;color:#40d6a0;background:#131f31;font-size:13px";
+$("connection").insertAdjacentElement("afterend", autoScanStatus);
+
+let autoScanLastTime = null;
+setInterval(() => {
+  // Avoid unnecessary API calls while the SIMBOT page is in the background.
+  if (document.hidden) {
+    autoScanStatus.textContent = "Auto scan: ON · paused while page is hidden";
+    return;
+  }
+
+  // Do not overlap the automatic scan with a manual or currently running scan.
+  if ($("refresh").disabled) {
+    autoScanStatus.textContent = "Auto scan: ON · waiting for current scan to finish";
+    return;
+  }
+
+  autoScanStatus.textContent = "Auto scan: scanning all 4 pairs…";
+  scanAll().then(() => {
+    autoScanLastTime = new Date();
+    autoScanStatus.textContent = "Auto scan: ON · last scan " + autoScanLastTime.toLocaleTimeString();
+  }).catch(() => {
+    autoScanStatus.textContent = "Auto scan: ON · scan error; will retry in 1 minute";
+  });
+}, 60000);
+
