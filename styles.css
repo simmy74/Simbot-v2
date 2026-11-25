@@ -53,5 +53,3 @@ canvas{display:block;width:100%;height:310px;touch-action:pan-y}
 .notice{font-size:12px;line-height:1.6;margin-top:20px}
 #autoScanStatus{margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;color:var(--accent);background:var(--panel);font-size:13px}
 @media(max-width:620px){.hero{align-items:flex-start;flex-direction:column}.checks{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}.scanner-grid{grid-template-columns:repeat(2,1fr)}canvas{height:260px}.metrics{grid-template-columns:repeat(3,1fr)}header small{font-size:11px}.controls button{flex:1;min-width:145px}}
-
-#pairCount{margin:0}.controls select{min-width:160px}.panel h3{overflow-wrap:anywhere}

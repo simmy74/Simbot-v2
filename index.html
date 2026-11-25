@@ -8,26 +8,25 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header><div class="brand">SIM<span>BOT</span></div><small>Multi-pair analysis workspace</small></header>
+<header><div class="brand">SIM<span>BOT</span></div><small>Multi-pair real-FX analysis workspace</small></header>
 <main>
 <section class="hero">
-  <div><p class="eyebrow">MULTI-PAIR ANALYSIS</p><h1 id="pairTitle">EUR/USD</h1><p>EMA 9 / EMA 21 · Double patterns · Rejection</p></div>
+  <div><p class="eyebrow">MULTI-PAIR ANALYSIS</p><h1 id="pairTitle">EUR/USD</h1><p>EMA 9/21 · BOS/CHoCH · Liquidity · Pullback · Breakout</p></div>
   <div id="connection" class="pill">Checking data…</div>
 </section>
 <section class="panel controls">
-  <label>Currency pair<select id="pairSelect"><option>EUR/USD</option><option>GBP/USD</option><option>USD/JPY</option><option>AUD/USD</option></select></label>
+  <label>Currency pair<select id="pairSelect"><option>EUR/USD</option><option>GBP/USD</option><option>USD/JPY</option><option>AUD/USD</option><option>USD/CAD</option><option>USD/CHF</option><option>NZD/USD</option><option>EUR/GBP</option><option>EUR/JPY</option><option>GBP/JPY</option><option>AUD/JPY</option><option>EUR/CHF</option><option>GBP/CHF</option><option>AUD/NZD</option><option>NZD/JPY</option><option>CAD/JPY</option><option>CHF/JPY</option><option>EUR/AUD</option><option>GBP/AUD</option><option>EUR/CAD</option></select></label>
   <label>Market interval<select id="interval"><option value="1min">1 minute</option><option value="5min">5 minutes</option><option value="15min">15 minutes</option></select></label>
-  <label>Strategy mode<select id="strategyMode"><option value="STRICT">STRICT · original confirmations</option><option value="BALANCED">BALANCED · 2+ strategy groups</option></select></label>
   <button id="scanSelected">Scan selected pair</button>
-  <button id="refresh">Scan next 4 pairs</button>
-  <p id="pairCount" class="hint" style="flex-basis:100%">Loading real forex pair catalogue…</p>
+  <label>Strategy mode<select id="strategyMode"><option value="strict">Strict confirmation</option><option value="balanced">Balanced analysis</option></select></label>
+  <button id="refresh">Scan pair batch</button>
 </section>
 <section class="panel">
-  <div class="section-head"><div><p class="eyebrow">MARKET SCANNER</p><h2>Rotating real-pair scanner</h2></div><span class="hint">Select a pair or scan the next four in rotation</span></div>
+  <div class="section-head"><div><p class="eyebrow">MARKET SCANNER</p><h2>Real forex pair scanner</h2></div><span class="hint">Select a pair or scan it individually</span></div>
   <div id="pairScanner" class="scanner-grid"></div>
 </section>
 <section class="panel alerts-panel">
-  <div><p class="eyebrow">CONFIRMATION ALERT</p><h2>Strategy alert bell</h2><p class="hint">STRICT alerts require all original confirmations. BALANCED mode uses two or more independent strategy groups.</p></div>
+  <div><p class="eyebrow">CONFIRMATION ALERT</p><h2>Strategy alert bell</h2><p class="hint">Strict mode requires all 3 confirmations. Balanced mode uses trend, structure and price-action confluence.</p></div>
   <div class="alert-controls">
     <button id="alertToggle" data-enabled="false">🔕 Alerts OFF</button>
     <button id="testSound" class="secondary">Test sound</button>
@@ -44,7 +43,7 @@
 <section class="panel expiry-panel">
   <p class="eyebrow">CALCULATED TRADE DURATION</p>
   <h2 id="expiryRecommendation">Waiting for a confirmed signal</h2>
-  <p id="expiryReason" class="hint">Expiry is suggested only when the selected strategy mode confirms a setup.</p>
+  <p id="expiryReason" class="hint">Expiry is a rule-based suggestion only; test it on a demo account before use.</p>
   <div class="metrics">
     <div><small>Suggested expiry</small><b id="expiryValue">—</b></div>
     <div><small>Setup score</small><b id="confidenceValue">—</b></div>
@@ -52,20 +51,13 @@
   </div>
   <p class="hint">The score is a rule-based estimate, not a statistically proven probability of winning. Expiry suggestions require backtesting.</p>
 </section>
+<section class="panel"><h3>Five-minute directional predictor</h3><div class="metrics"><div><small>5-min bias</small><b id="predictorBias">Waiting</b></div><div><small>Bias score</small><b id="predictorScore">—</b></div><div><small>Next step</small><b id="predictorAction">Scan data</b></div></div><p class="hint">Directional bias, not a guaranteed prediction or win probability.</p></section>
+<section class="panel"><h3>Market structure & liquidity</h3><div class="checks"><p>BOS: <b id="bosValue">Waiting</b></p><p>CHoCH: <b id="chochValue">Waiting</b></p><p>Liquidity sweep: <b id="sweepValue">Waiting</b></p><p>Order-block area: <b id="obValue">Waiting</b></p><p>EMA pullback: <b id="pullbackValue">Waiting</b></p><p>Breakout/retest: <b id="retestValue">Waiting</b></p></div></section>
 <section class="panel">
-  <h3>STRICT-mode confirmations — all 3 must pass</h3>
+  <h3>Strict confirmations — all 3 must pass</h3>
   <div class="checks"><p>1. EMA 9/21 crossover: <b id="crossCheck">Waiting</b></p><p>2. Confirmed double top/bottom: <b id="patternCheck">Waiting</b></p><p>3. Directional candle rejection: <b id="rejectCheck">Waiting</b></p></div>
   <p class="hint" id="patternDetail">Pattern details will appear here.</p>
   <div class="grid pattern-grid"><article><p>Double top</p><b id="doubleTop">Not checked</b></article><article><p>Double bottom</p><b id="doubleBottom">Not checked</b></article><article><p>Wick rejection</p><b id="rejection">Not checked</b></article><article><p>Structure break (CHoCH proxy)</p><b id="choch">Not checked</b></article></div>
-</section>
-<section class="panel">
-  <p class="eyebrow">INDEPENDENT FORECAST</p><h2>Five-minute direction predictor</h2>
-  <h3 id="predictorValue">Waiting for candles</h3><p id="predictorDetail" class="hint">Uses EMA slope, momentum, RSI, volatility and market structure. It is a directional bias, not a guaranteed forecast.</p>
-</section>
-<section class="panel">
-  <p class="eyebrow">MARKET STRUCTURE & LIQUIDITY</p><h2>Structure analysis</h2>
-  <div class="grid"><article><p>Trend structure / BOS / CHoCH</p><b id="structureValue">Waiting</b></article><article><p>Liquidity sweep</p><b id="liquidityValue">Not detected</b></article><article><p>Potential order block</p><b id="orderBlockValue">Not detected</b></article><article><p>Balanced strategy result</p><b id="balancedValue">Waiting</b></article></div>
-  <p class="hint">Order blocks and liquidity sweeps are technical estimates from candle data, not proof of institutional activity.</p>
 </section>
 <section class="panel history-panel">
   <div class="section-head"><div><p class="eyebrow">SIGNAL RECORD</p><h2>Signal history</h2></div><button id="clearSignalHistory" class="secondary">Clear history</button></div>
@@ -78,7 +70,7 @@
   </div>
 </section>
 <section class="panel"><h3>Paper-trade journal</h3><p>Recorded trades: <b id="count">0</b> · Paper win rate: <b id="winrate">—</b></p><div class="journal"><button data-result="win">Record win</button><button data-result="loss" class="secondary">Record loss</button><button id="clear" class="secondary">Clear</button></div></section>
-<p class="notice">SIMBOT is an experimental technical-analysis and paper-testing tool. It does not place trades or guarantee outcomes. Binary options are high risk. Third-party candles can differ from Pocket Option's feed, prices and timing. Signals require independent confirmation and are not financial advice. The scanner rotates through up to four real forex pairs per scan to limit Twelve Data requests. Pair availability and request limits depend on your Twelve Data plan. Notifications and sound require browser permission and SIMBOT to remain open and scanning; background push alerts are not configured.</p>
+<p class="notice">SIMBOT is an experimental technical-analysis and paper-testing tool. It does not place trades or guarantee outcomes. Binary options are high risk. Third-party candles can differ from Pocket Option's feed, prices and timing. Signals require independent confirmation and are not financial advice. Pair scanning rotates through a batch of four pairs per scan and is subject to your Twelve Data plan limits. Notifications and sound require browser permission and SIMBOT to remain open and scanning; background push alerts are not configured.</p>
 </main>
 <script src="app.js"></script>
 </body>
